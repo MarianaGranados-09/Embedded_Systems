@@ -18,15 +18,15 @@ int main(){
    int arr_size = 4;
 
    // ask for memory
-   char **arr=NULL;
+   char **arr=NULL; //pointers commonly initialized to null
    arr = malloc(arr_size*sizeof(char *));
    for(int i=0;i<arr_size;i++){
       arr[i] = malloc(STR_SIZE*sizeof(char));
    }
 
    int i=0;
-   while(fgets(arr[i], STR_SIZE, stdin)){
-      arr[i][strlen(arr[i])-1] = '\0';
+   while(fgets(arr[i], STR_SIZE, stdin)){ //memory direc, string size, and buffer
+      arr[i][strlen(arr[i])-1] = '\0'; //replacing enter with EOF 
 
       if (i>= arr_size-1){
          printf("Reallocating more memory, now: %d, after: %d\n", arr_size, arr_size*2);
@@ -50,7 +50,6 @@ int main(){
        {
            if(strcmp(arr[k], arr[k+1]) > 0)
            {
-               char temp[STR_SIZE];
                strcpy(temp, arr[k]);
                strcpy(arr[k], arr[k+1]);
                strcpy(arr[k+1], temp);
@@ -69,4 +68,5 @@ int main(){
 
    return 0;
 }
+
 
