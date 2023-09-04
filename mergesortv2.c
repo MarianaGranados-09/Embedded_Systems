@@ -10,7 +10,14 @@ int main()
 {
     printf("Merge sort algorithm starting...\n");
     int array[] = {9,4,8,1,7,0,3,2,5,6};
-    int len = 10;
+     int len = 10;
+    printf("Unsorted array: \n");
+    for(int i=0;i<len;i++)
+    {
+        printf("%d, ", array[i]);
+    }
+
+    printf("\n");
     merge_sort(array, len);
     for(int i=0;i<len;i++)
     {
@@ -35,8 +42,12 @@ void merge_sort_recursion(int a[], int l, int r)
         int m = l + (r - l) / 2; //finding the middle part of the array
         merge_sort_recursion(a, l,  m); //applying merge_sort_recursion
         //(breaking the array and the resultant arrays in half over and over again, hence divide and conquer)
-        merge_sort_recursion(a, m + 1, r);
+        merge_sort_recursion(a, m + 1, r);\
+        //printing arrays
+
         merge_sorted_arrays(a, l, m, r); //merge arrays
+
+
     }
 
 }
@@ -86,3 +97,12 @@ void merge_sorted_arrays(int a[], int l, int m, int r)
     }
 
 }
+
+
+
+
+
+
+
+
+
