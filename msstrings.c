@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+
 #include <string.h>
 
-#define LENGTH  10
-#define STR_SIZE 16
+#define STRNUM 10
+#define STR_SIZE 128
 
 void print_arr_ptr(char **arr, int arr_size){
    for(int i=0; i<arr_size; i++){
@@ -13,172 +14,140 @@ void print_arr_ptr(char **arr, int arr_size){
    printf("\n");
 }
 
-//functions for merge sort
-char **slice(char **arr, int start, int end); //slices array into halves
-void merge(char **result, char **left, char **right, int leftLen, int rightLen); //merges the extracted arrays
-void mergeSort(char **arr, int len); //
-void printArray(char **arr, int len);
-int getStrings();
 
-char **arr = NULL;
-int arr_size = 0;
+void merge_sort(char **a, int len); //accepts the array and its length
+void merge_sort_recursion(char **a, int l, int r); //recursive step of the algorithm, where we cont.
+//divide the array into smaller arrays
+void merge_sorted_arrays(char **a, int l, int m, int r); //merge two sorted portions of the array
 
-int main(void)
-
+int main()
 {
-   // int lis[LENGTH] = {1,9,2,8,3,7,4,6,5,0};
-    getStrings(); //function to get inputted user strings**
-    printf("The unsorted strings are: ");
-    print_arr_ptr(arr, arr_size);
-    mergeSort(arr, arr_size); //pass array of numbers to sort, as well as length
-    printf("The sorted strings are: ");
-    printArray(arr, arr_size);
 
-    for(int o=0;o<arr_size;o++)
-        free(arr[o]);
-    free(arr);
-
-    return 0;
-}
-//1. takes an array, a starting index and an ending index as parameters
-
-//2. dynamically allocates memory for a new array called result, and
-//3. copies elements from the original array from the specified start to end-1
-
-char **slice(char **arr, int start, int end) //1.
-{
-    char **result =malloc((end - start) * sizeof(char *)); //2.
-    int i;
-    for (i = start; i < end; i++)
-    {
-        result[i - start] = arr[i]; //3.
-    }
-    return result; //returns the newly created array
-}
-
-//takes two sorted arrays 'left' and 'right', their lengths
-//and an empty array 'result' where the merged result is stored
-void merge(char **result, char **left, char **right, int leftLen, int rightLen)
-{
-    int i = 0, j = 0, k=0;
-    //iterates both 'left' and 'right' arrays, comparing elements
-    //and copying them into the 'result' array in sorted order
-    while(i < leftLen && j < rightLen) //loop continues until all elements from
-    //left and right array are sorted
-    {
-        //strcmp returns less than, equal to, or greater than zero if s1 is less than, matches or greater than s2
-        //respectively strcmp(s1,s2)
-
-       // if (left[i] < right[j]) //if left array element is less than right array element
-        //then puts left[i] in result array
-        if(strcmp(left[i], right[j]) <= 0)
-        {
-
-           // result[i + j] = left[i];
-           strcpy(result[k], left[i]);
-            i++;
-        }
-        else
-        {
-            //the right array element is smaller, so right[j] is added
-            //to the result array
-            //result[i + j] = right[j];
-            strcpy(result[k], right[j]);
-            j++;
-        }
-        k++;
-    }
-    //after the loop, some remaining elements in either the left or right
-    //array may remain, so they are copied to the result array using
-    //2 additional for loops
-    while(i < leftLen)
-    {
-        //result[i + j] = left[i];
-        strcpy(result[k], left[i]);
-        i++;
-        k++;
-    }
-    while(j < rightLen)
-    {
-        //result[i + j] = right[j];
-        strcpy(result[k], right[j]);
-        j++;
-        k++;
-    }
-    //free memory from left and right array
-    //no longer needed
-    //free(left);
-    //free(right);
-}
-
-//mergeSort recursively divides the input array into two halves until
-//the base case is reacher
-
-//it uses the slice function to create left and right subarrays, then it
-//recursively applies 'mergeSort' to both subarrays and merges them using
-//the merge function
-void mergeSort(char **arr, int len)
-{
-    if (len <= 1)
-    {
-        return;
-    }
-    int mid = len/2;
-    char **left = slice(arr, 0, mid);
-    char **right = slice(arr, mid, len);
-    mergeSort(left, mid);
-    mergeSort(right, len - mid);
-    printf("Left: ");
-    printArray(left, mid);
-    printf("Right: ");
-    printArray(right, len - mid);
-
-    merge(arr, left, right, mid, len - mid);
-
-    free(left);
-    free(right);
-}
-
-
-//prints array
-void printArray(char **arr, int len)
-{
-    int i = 0;
-    printf("[");
-    for(; i < len; i++)
-    {
-        printf("%s, ", arr[i]);
-    }
-    printf("]\n");
-}
-
-int getStrings()
-{
-    arr_size = 4;
-
-    //ask for memory
-    //char **arr = NULL;
+    int arr_size = 4;
+    char **arr = NULL;
     arr = malloc(arr_size*sizeof(char *));
-    for(int i=0;i<arr_size;i++)
-    {
-        arr[i] = malloc(STR_SIZE*sizeof(char));
-    }
 
-    int i=0;
-    while(fgets(arr[i], STR_SIZE, stdin)){ //memory direc, string size, and buffer
-      arr[i][strlen(arr[i])-1] = '\0'; //replacing enter with EOF
+     for(int y=0;y<arr_size;y++){
+      arr[y] = malloc(STR_SIZE*sizeof(char));
+   }
+
+   int i=0;
+   while(fgets(arr[i], STR_SIZE, stdin)){
+      arr[i][strlen(arr[i])-1] = '\0';
 
       if (i>= arr_size-1){
-         //printf("Reallocating more memory, now: %d, after: %d\n", arr_size, arr_size*2);
          arr = realloc(arr, arr_size*2*sizeof(char *));
-         for(int j=arr_size;j<arr_size*2;j++){
-            arr[j] = malloc(STR_SIZE*sizeof(char));
+         for(int t=arr_size;t<arr_size*2;t++){
+            arr[t] = malloc(STR_SIZE*sizeof(char));
          }
          arr_size = arr_size*2;
       }
 
       i++;
    }
+   printf("Finished reading strings. The unsorted strings are: \n");
 
-   return arr_size;
+   print_arr_ptr(arr, i);
+
+    printf("Merge sort algorithm starting...\n");
+    printf("\n");
+    merge_sort(arr, i);
+
+    printf("The sorted strings are: \n");
+    print_arr_ptr(arr, i);
+    printf("\n");
+    for(int j = 0; j < arr_size; j++)
+    {
+        free(arr[j]);
+    }
+    free(arr);
+
+    printf("\n");
+    return 0;
 }
+
+void merge_sort(char **a, int len)
+{
+    merge_sort_recursion(a, 0, len-1);
+
+}
+
+void merge_sort_recursion(char **a, int l, int r)
+{
+
+    if(l < r) //keeps dividing the arrays r less than r
+    {
+        int m = l + (r - l) / 2; //finding the middle part of the array
+        merge_sort_recursion(a, l,  m); //applying merge_sort_recursion
+        //(breaking the array and the resultant arrays in half over and over again, hence divide and conquer)
+        merge_sort_recursion(a, m + 1, r);\
+        //printing arrays
+
+        merge_sorted_arrays(a, l, m, r); //merge arrays
+    }
+
+}
+
+void merge_sorted_arrays(char **a, int l, int m, int r)
+{
+    int leftlen = m - l + 1; //length of left portion of array
+    int rightlen = r - m; //length of right portion of array
+
+    char *temp_left[leftlen];
+    char *temp_right[rightlen];
+
+    int i, j, k;
+    for(int o=0; o< leftlen; o++)
+    {
+        //creating memory:
+        temp_left[o] = malloc(STR_SIZE * sizeof(char));
+        strcpy(temp_left[o], a[l + o]);
+        //temp_left[i] =  a[l + i]; //the temporary array takes the values of the first half of the array
+    }
+    for(int p=0; p<rightlen; p++)
+    {
+        temp_right[p] = malloc(STR_SIZE * sizeof(char));
+        strcpy(temp_right[p], a[m + 1 + p]);
+        //temp_right[i] = a[m + 1 + i]; //the temporary array takes value of the second half of the array
+    }
+
+    //three counter variables helping us index the three arrays
+    //k index the actual array we are sorting - a
+
+    //finds the next element from either temp arrays to copy into the array at index k
+    //i and j indexes into the temporary arrays
+
+    //i temp_left
+    //j temp_right
+    for(i = 0, j = 0, k = l; k <= r; k++)
+    {
+        //if i is less than the left array length and j is equal or bigger than right array length or the current element
+        //in the right array is equal or bigger than the current element in the left array, then asssign the current element
+        //of the left array to the a array using the k variable to index the a array
+        if((i < leftlen) && (j >= rightlen || strcmp(temp_left[i], temp_right[j]) <= 0))
+        {
+            strcpy(a[k], temp_left[i]);
+            //**a[k] = **temp_left[i];
+            i++;
+        }
+        else{
+            //assign the current element of the right temp array to the a array
+            strcpy(a[k], temp_right[j]);
+            //**a[k] = **temp_right[j];
+            j++;
+        }
+
+    }
+    
+    for (int i = 0; i < leftlen; i++)
+    {
+        free(temp_left[i]);
+    }
+    for (int j = 0; j < rightlen; j++)
+    {
+        free(temp_right[j]);
+    }
+    
+
+}
+
