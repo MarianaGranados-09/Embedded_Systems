@@ -66,21 +66,26 @@ int main()
     return 0;
 }
 
+//merge_sort recibe el array de cadenas y la longitud del array
 void merge_sort(char **a, int len)
 {
-    merge_sort_recursion(a, 0, len-1);
+    merge_sort_recursion(a, 0, len-1); //merge_sort_recursion recibe el array de cadenas, la posicion 0
+    //indicando la primera cadena y la posicion len-1, que indica la ultima cadena del array
 
 }
 
+//merge_sort_recursion ejecuta el algoritmo, recibe primero el array de cadenas, despues un valor low y high
+//tambien se puede entender como valor left y right, que corresponden a la seccion izquierda y seccion derecha del array
 void merge_sort_recursion(char **a, int l, int r)
 {
-
+    //mientras left sea menor a right
     if(l < r) //keeps dividing the arrays r less than r
     {
+        
         int m = l + (r - l) / 2; //finding the middle part of the array
-        merge_sort_recursion(a, l,  m); //applying merge_sort_recursion
+        merge_sort_recursion(a, l,  m); //applying merge_sort_recursion-keeps calculating l and r until l < r
         //(breaking the array and the resultant arrays in half over and over again, hence divide and conquer)
-        merge_sort_recursion(a, m + 1, r);\
+        merge_sort_recursion(a, m + 1, r); 
         //printing arrays
 
         merge_sorted_arrays(a, l, m, r); //merge arrays
@@ -97,15 +102,16 @@ void merge_sorted_arrays(char **a, int l, int m, int r)
     char *temp_right[rightlen];
 
     int i, j, k;
-    for(int o=0; o< leftlen; o++)
+    for(int o=0; o<leftlen; o++)
     {
-        //creating memory:
+        //creating memory for temporary left half array:
         temp_left[o] = malloc(STR_SIZE * sizeof(char));
         strcpy(temp_left[o], a[l + o]);
         //temp_left[i] =  a[l + i]; //the temporary array takes the values of the first half of the array
     }
     for(int p=0; p<rightlen; p++)
     {
+        //creating memory for the temp. right half array
         temp_right[p] = malloc(STR_SIZE * sizeof(char));
         strcpy(temp_right[p], a[m + 1 + p]);
         //temp_right[i] = a[m + 1 + i]; //the temporary array takes value of the second half of the array
@@ -150,4 +156,3 @@ void merge_sorted_arrays(char **a, int l, int m, int r)
     
 
 }
-
